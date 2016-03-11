@@ -1,16 +1,15 @@
-
+[[spring-boot-jsp-executable-jars]]
+= Using Spring Boot with JSPs in Executable Jars
 
 image:https://travis-ci.org/ghillert/spring-boot-jsp-demo.svg?branch=master["Build Status", link="https://travis-ci.org/ghillert/spring-boot-jsp-demo"]
 
-[[jsp-introduction]]
-= Using Spring Boot with JSPs in Executable Jars
 
-[[getting-started-introducing-spring-boot]]
-
+[[spring-boot-jsp-introduction]]
 == Introduction
 
 As you may know, I am a co-organizer for the https://www.devnexus.com/[DevNexus conference], the second-largest enterprise Java conference in North-America in Atlanta, GA. Together with https://twitter.com/summerspittman[Summers Pittman], I also maintain the https://github.com/devnexus/devnexus-site[Spring-based web-application] that drives the website, schedule, call-for-paper (CFP) process and nowadays ticket registrations as well.
 
+[[spring-boot-jsp-goal]]
 == Goal
 
 When we started planing for DevNexus 2016, I wanted to modernize the DevNexus application. Specifically, I planned to improve the underlying infrastructure of the app.
@@ -38,6 +37,7 @@ ____
 
 What a bummer…
 
+[[spring-boot-jsp-solution]]
 == Solution
 
 Just to recap my requirement, I want to serve JSPs out of my classpath so that I can create executable Jar files. Basically, _Eliminate the webapps folder_.
@@ -51,8 +51,10 @@ Unfortunately, taking my Maven-based project, putting your JSPs into e.g. `src/m
 
 So the simple thing to remember is to store your JSPs in a folder like `/src/main/resources/META-INF/resources/WEB-INF/jsp` and you're good to go (Plus some minor configuration around). To make things easy, lets go over a little example project.
 
+[[spring-boot-jsp-sample-project]]
 === Sample Project
 
+[[spring-boot-jsp-sample-project-spring-initializr]]
 ==== Spring Initializr
 
 The best way to start a Spring Boot project is to head over to http://start.spring.io/. Using https://github.com/spring-io/initializr/[Spring Initializr] underneath, the website lets you customize and create Spring Boot starter projects. For our requirement, we want to create a simple `web` project.
@@ -73,6 +75,7 @@ $ cd spring-boot-jsp-demo
 
 Unzip the project to a directory of your choosing.
 
+[[spring-boot-jsp-sample-project-mave]]
 ==== Add Maven Dependencies
 
 In order to enable JSP support we need to add a few dependencies to our new project in `pom.xml`.
@@ -88,6 +91,7 @@ In order to enable JSP support we need to add a few dependencies to our new proj
 </dependency>
 ```
 
+[[spring-boot-jsp-sample-project-template-location]]
 ==== Define the location of your JSP templates
 
 Next we need to define the template prefix and suffix for our JSP files in `application.properties`. Thus add:
@@ -99,6 +103,7 @@ spring.mvc.view.suffix=.jsp
 
 IMPORTANT: Keep in mind that we will ultimatively, place the JSP templates under `src/main/resources/META-INF/resources/WEB-INF/jsp/`
 
+[[spring-boot-jsp-sample-project-controller]]
 ==== Create a Spring Web Controller
 
 Create a simple web controller:
@@ -123,6 +128,7 @@ public class HelloWorldController {
 
 ```
 
+[[spring-boot-jsp-sample-project-template]]
 ==== Create the JSP Template
 
 Next, create the corresponding JSP file `hello-world.jsp` in the directory `src/main/resources/META-INF/resources/WEB-INF/jsp/`:
@@ -148,6 +154,7 @@ response.setHeader("Expires","0");
 </html>
 ```
 
+[[spring-boot-jsp-sample-project-running]]
 ==== Run the Sample Application
 
 Now it is time to run the application - execute:
@@ -157,6 +164,22 @@ $ mvn clean package
 $ java -jar target/jsp-demo-0.0.1-SNAPSHOT.jar
 ```
 
+[[spring-boot-jsp-sample-jetty]]
+==== Jetty
+
+Work in Progress ... 
+
+https://github.com/jetty-project/embedded-jetty-jsp
+
+https://dev.eclipse.org/mhonarc/lists/jetty-dev/msg00903.html
+
+https://www.totaalsoftware.com/blog/104-jetty-with-servlet-3-0-external-resources
+
+https://github.com/jetty-project/embedded-jetty-jsp
+
+https://github.com/spring-projects/spring-boot/issues/367
+
+[[spring-boot-jsp-sample-conclusion]]
 == Conclusion
 
 In this blog post I have shown how easy it is to use JSP templates with Spring Boot in executable Jars by simply putting your templates into `src/main/resources/META-INF/resources/WEB-INF/jsp/`. 
