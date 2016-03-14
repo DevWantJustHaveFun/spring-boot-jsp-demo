@@ -15,86 +15,63 @@
  */
 package com.hillert;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.net.URLClassLoader;
+import java.util.HashMap;
 
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.util.resource.ResourceCollection;
-import org.eclipse.jetty.webapp.WebAppContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.jasper.deploy.JspPropertyGroup;
+import org.apache.jasper.deploy.TagLibraryInfo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
-import org.springframework.boot.context.embedded.jetty.JettyEmbeddedServletContainerFactory;
-import org.springframework.boot.context.embedded.jetty.JettyServerCustomizer;
-import org.springframework.boot.context.web.SpringBootServletInitializer;
-import org.springframework.context.annotation.Bean;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.boot.context.embedded.undertow.UndertowDeploymentInfoCustomizer;
+import org.springframework.boot.context.embedded.undertow.UndertowEmbeddedServletContainerFactory;
 
+import io.undertow.jsp.HackInstanceManager;
+import io.undertow.jsp.JspServletBuilder;
+import io.undertow.server.handlers.resource.ClassPathResourceManager;
+import io.undertow.servlet.api.DeploymentInfo;
+
+/**
+ *
+ * @author Gunnar Hillert
+ *
+ */
 @SpringBootApplication
-public class JspDemoApplication  extends SpringBootServletInitializer implements EmbeddedServletContainerCustomizer {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(JspDemoApplication.class);
+public class JspDemoApplication implements EmbeddedServletContainerCustomizer {
 
 	public static void main(String[] args) {
 		SpringApplication.run(JspDemoApplication.class, args);
 	}
 
-	private static File getScratchDir() {
-		File tempDir = new File(System.getProperty("java.io.tmpdir"));
-		File scratchDir = new File(tempDir.toString(), "embedded-jetty-jsp");
-
-		if (!scratchDir.exists())
-		{
-			if (!scratchDir.mkdirs())
-			{
-				throw new IllegalStateException("Unable to create scratch directory: " + scratchDir);
-			}
-		}
-		return scratchDir;
-	}
-
-	@Bean
-	public JettyServerCustomizer jettyServerCustomizer() {
-
-		return new JettyServerCustomizer() {
-
-			@Override
-			public void customize(Server server) {
-				WebAppContext webAppContext = (WebAppContext) server.getHandler();
-
-				File tempDir = getScratchDir();
-				LOGGER.info("Setting Jetty temp directory to {}", tempDir);
-				webAppContext.setTempDirectory(tempDir);
-
-				try {
-					ClassPathResource classPathResource = new ClassPathResource("META-INF/resources");
-					String externalResource = classPathResource.getURI().toString();
-					String[] resources = new String[] { externalResource };
-					webAppContext.setBaseResource(new ResourceCollection(resources));
-
-					ClassLoader jspClassLoader = new URLClassLoader(new URL[0], this.getClass().getClassLoader());
-					webAppContext.setClassLoader(jspClassLoader);
-				}
-				catch (IOException exception) {
-					exception.printStackTrace();
-				}
-			}
-		};
-	}
-	public void customizeJetty(
-			JettyEmbeddedServletContainerFactory containerFactory) {
-		containerFactory.addServerCustomizers(jettyServerCustomizer());
-	}
-
 	@Override
 	public void customize(ConfigurableEmbeddedServletContainer container) {
-		if (container instanceof JettyEmbeddedServletContainerFactory) {
-			customizeJetty((JettyEmbeddedServletContainerFactory) container);
+		if (container instanceof UndertowEmbeddedServletContainerFactory) {
+			final UndertowEmbeddedServletContainerFactory undertow = (UndertowEmbeddedServletContainerFactory) container;
+
+			final UndertowDeploymentInfoCustomizer customizer = new UndertowDeploymentInfoCustomizer() {
+
+				@Override
+				public void customize(DeploymentInfo deploymentInfo) {
+					deploymentInfo.setClassLoader(JspDemoApplication.class.getClassLoader())
+					.setContextPath("/")
+					.setDeploymentName("servletContext.war")
+					.setResourceManager(new DefaultResourceLoader(JspDemoApplication.class))
+					.addServlet(JspServletBuilder.createServlet("Default Jsp Servlet", "*.jsp"));
+
+					final HashMap<String, TagLibraryInfo> tagLibraryInfo = TldLocator.createTldInfos();
+
+					JspServletBuilder.setupDeployment(deploymentInfo, new HashMap<String, JspPropertyGroup>(), tagLibraryInfo, new HackInstanceManager());
+
+				}
+			};
+
+			undertow.addDeploymentInfoCustomizers(customizer);
+		}
+	}
+
+	public static class DefaultResourceLoader extends ClassPathResourceManager {
+		public DefaultResourceLoader(final Class<?> clazz) {
+			super(clazz.getClassLoader(), "");
 		}
 	}
 }
