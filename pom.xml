@@ -8,7 +8,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>jsp-demo</name>
+	<name>jsp-demo-parent</name>
 	<description>Demo project for Spring Boot using JSPs</description>
 
 	<parent>
@@ -19,7 +19,8 @@
 	</parent>
 
 	<modules>
-		<module>spring-boot-jsp-demo-tomcat</module>
+		<module>jsp-demo-tomcat</module>
+		<module>jsp-demo-undertow</module>
 	</modules>
 
 	<repositories>

@@ -4,18 +4,17 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.hillert</groupId>
-	<artifactId>jsp-demo</artifactId>
+	<artifactId>jsp-demo-undertow</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>jsp-demo</name>
-	<description>Demo project for Spring Boot using JSPs</description>
+	<name>jsp-demo-undertow</name>
+	<description>Demo project for Spring Boot using JSPs and Undertow</description>
 
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.3.3.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<groupId>com.hillert</groupId>
+		<artifactId>jsp-demo-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
 	<properties>
