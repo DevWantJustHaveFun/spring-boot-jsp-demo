@@ -48,9 +48,11 @@ public class TldLocator {
 		final ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(loader);
 		final Resource[] resources;
 		final String locationPattern = "classpath*:**/*.tld";
+
 		try {
 			resources = resolver.getResources(locationPattern);
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			throw new IllegalStateException(String.format("Error while retrieving resources"
 					+ "for location pattern '%s'.", locationPattern, e));
 		}
@@ -74,7 +76,8 @@ public class TldLocator {
 				if (!tagLibInfos.containsKey(taglibInfo.getUri())) {
 					tagLibInfos.put(taglibInfo.getUri(), taglibInfo);
 				}
-			} catch (XMLStreamException | IOException e) {
+			}
+			catch (XMLStreamException | IOException e) {
 				e.printStackTrace();
 			}
 			finally {
@@ -82,11 +85,13 @@ public class TldLocator {
 					if (is != null) {
 						is.close();
 					}
-				} catch (IOException ignore) {
+				}
+				catch (IOException ignore) {
 				}
 			}
 		}
 		watch.stop();
+
 		LOGGER.info(watch.shortSummary());
 
 		return tagLibInfos;
