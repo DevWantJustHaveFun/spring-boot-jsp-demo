@@ -63,7 +63,7 @@ So the simple thing to remember is to store your JSPs in a folder like `/src/mai
 
 The best way to start a Spring Boot project is to head over to http://start.spring.io/. Using https://github.com/spring-io/initializr/[Spring Initializr] underneath, the website lets you customize and create Spring Boot starter projects. For our requirement, we want to create a simple `web` project.
 
-image::src/main/resources/static/images/spring-initializr.png[Create starter project using spring initializr]
+image::images/spring-initializr.png[Create starter project using spring initializr]
 
 Selecting `web` enables _Full-stack web development with Tomcat and Spring MVC_. Now you can press the `Generate Project` button, which will start the download of a Zip file containing your customized project.
 
