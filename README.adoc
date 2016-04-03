@@ -1,8 +1,10 @@
 = Using Spring Boot with JSPs in Executable Jars
 Gunnar Hillert <doc.writer@asciidoctor.org>
 v1.0, 2016-04-03
-:toc:
+:toc: macro
 :toclevels: 5
+
+toc::[]
 
 [[spring-boot-jsp-repo]]
 == Sample Repository
