@@ -1,7 +1,19 @@
-[[spring-boot-jsp-executable-jars]]
 = Using Spring Boot with JSPs in Executable Jars
+Gunnar Hillert <doc.writer@asciidoctor.org>
+v1.0, 2016-04-03
+:toc:
+:toclevels: 5
 
-image:https://travis-ci.org/ghillert/spring-boot-jsp-demo.svg?branch=master["Build Status", link="https://travis-ci.org/ghillert/spring-boot-jsp-demo"]
+[[spring-boot-jsp-repo]]
+== Sample Repository
+
+This sample repository is available at: https://github.com/ghillert/spring-boot-jsp-demo
+
+[cols="2*", width="50%"]
+|===
+|Build Status
+|image:https://travis-ci.org/ghillert/spring-boot-jsp-demo.svg?branch=master["Build Status", link="https://travis-ci.org/ghillert/spring-boot-jsp-demo"]
+|===
 
 This repository contains the following 2 examples:
 
@@ -42,7 +54,7 @@ ____
 What a bummer…
 
 [[spring-boot-jsp-solution]]
-== Solution
+== Solution using Tomcat
 
 Just to recap my requirement, I want to serve JSPs out of my classpath so that I can create executable Jar files. Basically, _Eliminate the webapps folder_.
 
@@ -55,11 +67,8 @@ Unfortunately, taking my Maven-based project, putting your JSPs into e.g. `src/m
 
 So the simple thing to remember is to store your JSPs in a folder like `/src/main/resources/META-INF/resources/WEB-INF/jsp` and you're good to go (Plus some minor configuration around). To make things easy, lets go over a little example project.
 
-[[spring-boot-jsp-sample-project]]
-=== Sample Project
-
 [[spring-boot-jsp-sample-project-spring-initializr]]
-==== Spring Initializr
+=== Getting started with Spring Initializr
 
 The best way to start a Spring Boot project is to head over to http://start.spring.io/. Using https://github.com/spring-io/initializr/[Spring Initializr] underneath, the website lets you customize and create Spring Boot starter projects. For our requirement, we want to create a simple `web` project.
 
@@ -73,16 +82,17 @@ Instead of following the individual steps, you can also download the fully confi
 
 ```shell
 $ git clone https://github.com/ghillert/spring-boot-jsp-demo.git
-$ cd spring-boot-jsp-demo
+$ cd spring-boot-jsp-demo/jsp-demo-tomcat
 ```
 ====
 
-Unzip the project to a directory of your choosing.
+Unzip the project to a directory of your choosing and cd into `jsp-demo-tomcat`.
 
 [[spring-boot-jsp-sample-project-mave]]
-==== Add Maven Dependencies
+=== Add Maven Dependencies
 
-In order to enable JSP support we need to add a few dependencies to our new project in `pom.xml`.
+In order to enable JSP support using Tomcat we need to add a few dependencies to
+our new project in `pom.xml`.
 
 ```xml
 <dependency>
@@ -96,7 +106,7 @@ In order to enable JSP support we need to add a few dependencies to our new proj
 ```
 
 [[spring-boot-jsp-sample-project-template-location]]
-==== Define the location of your JSP templates
+=== Define the location of your JSP templates
 
 Next we need to define the template prefix and suffix for our JSP files in `application.properties`. Thus add:
 
@@ -105,10 +115,10 @@ spring.mvc.view.prefix=/WEB-INF/jsp/
 spring.mvc.view.suffix=.jsp
 ```
 
-IMPORTANT: Keep in mind that we will ultimatively, place the JSP templates under `src/main/resources/META-INF/resources/WEB-INF/jsp/`
+IMPORTANT: Keep in mind that we will ultimately, place the JSP templates under `src/main/resources/META-INF/resources/WEB-INF/jsp/`
 
 [[spring-boot-jsp-sample-project-controller]]
-==== Create a Spring Web Controller
+=== Create a Spring Web Controller
 
 Create a simple web controller:
 
@@ -133,7 +143,7 @@ public class HelloWorldController {
 ```
 
 [[spring-boot-jsp-sample-project-template]]
-==== Create the JSP Template
+=== Create the JSP Template
 
 Next, create the corresponding JSP file `hello-world.jsp` in the directory `src/main/resources/META-INF/resources/WEB-INF/jsp/`:
 
@@ -159,46 +169,150 @@ response.setHeader("Expires","0");
 ```
 
 [[spring-boot-jsp-sample-project-running]]
-==== Run the Sample Application
+=== Run the Sample Application
 
 Now it is time to run the application - execute:
 
 ```shell
 $ mvn clean package
-$ java -jar target/jsp-demo-0.0.1-SNAPSHOT.jar
+$ java -jar jsp-demo-tomcat/target/jsp-demo-tomcat-1.0.0-BUILD-SNAPSHOT.jar
 ```
+In your console you should start seeing how the application starts up.
+
+image::images/starting-tomcat-jsp-sample-with-boot.png[Start Sample for Tomcat]
+
+Once started, open your browser and go to the following Url http://localhost:8080/
 
 [[spring-boot-jsp-sample-jetty]]
-==== Jetty
+== What about Jetty?
 
-Work in Progress ...
+I still need to look more closely at Jetty. Consider it "Work in Progress". Below
+you will find a a few pointers on the subject:
 
-https://github.com/jetty-project/embedded-jetty-jsp
-
-https://dev.eclipse.org/mhonarc/lists/jetty-dev/msg00903.html
-
-https://www.totaalsoftware.com/blog/104-jetty-with-servlet-3-0-external-resources
-
-https://github.com/jetty-project/embedded-jetty-jsp
-
-https://github.com/spring-projects/spring-boot/issues/367
-
-[[spring-boot-jsp-sample-conclusion]]
+* https://github.com/jetty-project/embedded-jetty-jsp
+* https://dev.eclipse.org/mhonarc/lists/jetty-dev/msg00903.html
+* https://www.totaalsoftware.com/blog/104-jetty-with-servlet-3-0-external-resources
+* https://github.com/jetty-project/embedded-jetty-jsp
+* https://github.com/spring-projects/spring-boot/issues/367
 
 [[spring-boot-jsp-sample-undertow]]
-==== Undertow
+== What about Undertow?
 
-http://undertow.io/[Undertow] is another alternative for using an embedded container with Spring Boot. While I was working on updating the Spring Boot documentation regarding JSP support for Tomcat, I noticed the following line in the Reference Guide for Spring Boot `1.3.3`:
+http://undertow.io/[Undertow] is another alternative for using an embedded container
+with Spring Boot. You can find general information in the Spring Boot reference
+guide chapter
+https://docs.spring.io/spring-boot/docs/current/reference/html/howto-embedded-servlet-containers.html#howto-use-undertow-instead-of-tomcat[Use Undertow instead of Tomcat].
+
+While I was working on updating the Spring Boot documentation regarding the JSP support
+for Tomcat, I noticed the following line in the reference guide for Spring Boot `1.3.3`:
 
 [quote, Spring Boot Reference Guide (version 1.3.3)]
 ____
 Undertow does not support JSPs.
 ____
 
-Being a good citizen, I dug a little deeper and discovered the https://github.com/fourcube/undertow-jsp-sample[Undertow JSP sample] application. It turns out that Undertow has indeed JSP support by using a https://github.com/undertow-io/jastow[jastow], which is a Jasper fork for Undertow.
+Being a good citizen, I dug a little deeper and discovered the
+https://github.com/fourcube/undertow-jsp-sample[Undertow JSP sample] application by
+https://fourcube.github.io/[Chris Grieger]. It turns out that Undertow has indeed
+JSP support by using https://github.com/undertow-io/jastow[jastow], which is a
+Jasper fork for Undertow. The key was to adapt the
+https://github.com/ghillert/spring-boot-jsp-demo/tree/master/jsp-demo-undertow[Undertow JSP sample application
+for Spring Boot].
 
-So the key was to adapt the Undertow JSP sample application for Spring Boot.
+Doing so was actually fairly straightforward. The actual Undertow configuration
+uses Spring Boot`s
+`https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/context/embedded/EmbeddedServletContainerCustomizer.html[EmbeddedServletContainerCustomizer]`:
 
+```java
+final UndertowDeploymentInfoCustomizer customizer = new UndertowDeploymentInfoCustomizer() {
+
+	@Override
+	public void customize(DeploymentInfo deploymentInfo) {
+		deploymentInfo.setClassLoader(JspDemoApplication.class.getClassLoader())
+		.setContextPath("/")
+		.setDeploymentName("servletContext.war")
+		.setResourceManager(new DefaultResourceLoader(JspDemoApplication.class))
+		.addServlet(JspServletBuilder.createServlet("Default Jsp Servlet", "*.jsp"));
+
+		final HashMap<String, TagLibraryInfo> tagLibraryInfo = TldLocator.createTldInfos();
+
+		JspServletBuilder.setupDeployment(deploymentInfo, new HashMap<String, JspPropertyGroup>(), tagLibraryInfo, new HackInstanceManager());
+
+	}
+};
+```
+
+The full source is available in the
+`https://github.com/ghillert/spring-boot-jsp-demo/blob/master/jsp-demo-undertow/src/main/java/com/hillert/JspDemoApplication.java[JspDemoApplication]`
+class.
+
+The main issue is more or less the retrieval and configuration of the used Taglibraries.
+The Undertow JSP sample provides the https://github.com/fourcube/undertow-jsp-sample/blob/master/src/main/java/com/grieger/sample/undertow/TldLocator.java[TldLocator]
+class, which does the heavy lifting. For our example, I am [adapting that class] so that
+it works in the context of Spring Boot.
+
+In Spring Boot we are dealing with
+http://stackoverflow.com/questions/11947037/what-is-an-uber-jar[über-Jars], meaning
+the resulting executable jar file will contain other jar files representing its
+dependencies.
+
+Spring provides some nifty helpers to retrieve the needed Tag Library Descriptors (TLD) files.
+
+In `TldLocator#createTldInfos` I use a `ResourcePatternResolver`, specifically
+a `PathMatchingResourcePatternResolver` with a location pattern of `classpath*:**/*.tld`.
+
+```java
+final URLClassLoader loader = (URLClassLoader) Thread.currentThread().getContextClassLoader();
+
+final ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(loader);
+final Resource[] resources;
+final String locationPattern = "classpath*:**/*.tld";
+
+try {
+	resources = resolver.getResources(locationPattern);
+}
+catch (IOException e) {
+	throw new IllegalStateException(String.format("Error while retrieving resources"
+			+ "for location pattern '%s'.", locationPattern, e));
+}
+```
+
+[IMPORTANT]
+====
+Don't forget the asterix right after `classpath`. The `classpath*:` allows you
+to retrieve multiple class path resources with the same name. It will also retrieve
+resources across multiple jar files. This is an extremely useful feature. For more information
+please see the relavent JavaDocs for
+http://docs.spring.io/autorepo/docs/spring-framework/current/javadoc-api/org/springframework/core/io/support/PathMatchingResourcePatternResolver.html[PathMatchingResourcePatternResolver].
+====
+
+Once we have the TLD resources, they will be parsed and ultimately used to create
+a collection of `org.apache.jasper.deploy.TagLibraryInfo`.
+
+With those at hand, we create a JSP deployment for Undertow using the DeploymentInfo
+and the `TagLibraryInfo` collection.
+
+```java
+final HashMap<String, TagLibraryInfo> tagLibraryInfo = TldLocator.createTldInfos();
+
+JspServletBuilder.setupDeployment(deploymentInfo, new HashMap<String, JspPropertyGroup>(), tagLibraryInfo, new HackInstanceManager());
+```
+And that's it. Simply build and run the application and you should have a working
+JSP-based application.
+
+```shell
+$ mvn clean package
+$ java -jar jsp-demo-tomcat/target/jsp-demo-tomcat-1.0.0-BUILD-SNAPSHOT.jar
+```
+In your console you should start seeing how the application starts up.
+
+image::images/starting-undertow-jsp-sample-with-boot.png[Start Sample for Undertow]
+
+Once started, open your browser and go to the following Url http://localhost:8080/.
+
+image::images/browser-undertow-jsp-sample-with-boot.png[Start Sample for Undertow]
+
+[[spring-boot-jsp-sample-conclusion]]
 == Conclusion
 
 In this blog post I have shown how easy it is to use JSP templates with Spring Boot in executable Jars by simply putting your templates into `src/main/resources/META-INF/resources/WEB-INF/jsp/`.
