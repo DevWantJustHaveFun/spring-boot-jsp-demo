@@ -1,6 +1,6 @@
 = Using Spring Boot with JSPs in Executable Jars
 Gunnar Hillert <doc.writer@asciidoctor.org>
-v1.0, 2016-04-03
+v1.1, 2017-02-03
 :toc: macro
 :toclevels: 5
 
@@ -19,6 +19,7 @@ This sample repository is available at: https://github.com/ghillert/spring-boot-
 
 This repository contains the following 2 examples:
 
+* _jsp-demo-jetty_ - Demonstrates using JSPs and http://projects.spring.io/spring-boot/[Spring Boot] executable Jars using http://www.eclipse.org/jetty/[Jetty]
 * _jsp-demo-tomcat_   - Demonstrates using JSPs and http://projects.spring.io/spring-boot/[Spring Boot] executable Jars using http://tomcat.apache.org/[Tomcat]
 * _jsp-demo-undertow_ - Demonstrates using JSPs and http://projects.spring.io/spring-boot/[Spring Boot] executable Jars using http://undertow.io/[Undertow]
 
@@ -188,14 +189,31 @@ Once started, open your browser and go to the following Url http://localhost:808
 [[spring-boot-jsp-sample-jetty]]
 == What about Jetty?
 
-I still need to look more closely at Jetty. Consider it "Work in Progress". Below
-you will find a a few pointers on the subject:
+http://www.eclipse.org/jetty/[Jetty] support seems to work quite nicely. As of
+Spring Boot `1.4.4` it provide the best support for running JSPs in embedded mode.
 
-* https://github.com/jetty-project/embedded-jetty-jsp
-* https://dev.eclipse.org/mhonarc/lists/jetty-dev/msg00903.html
-* https://www.totaalsoftware.com/blog/104-jetty-with-servlet-3-0-external-resources
-* https://github.com/jetty-project/embedded-jetty-jsp
-* https://github.com/spring-projects/spring-boot/issues/367
+All you need to do is to set the `BaseResource` on the Jetty `WebAppContext` pointing
+to the classpath resource that shall represent your webroot.
+
+```java
+@Override
+public void customize(ConfigurableEmbeddedServletContainer container) {
+
+	if (container instanceof JettyEmbeddedServletContainerFactory) {
+		final JettyEmbeddedServletContainerFactory jetty = (JettyEmbeddedServletContainerFactory) container;
+
+		final JettyServerCustomizer customizer = new JettyServerCustomizer() {
+			@Override
+			public void customize(Server server) {
+				Handler handler = server.getHandler();
+				WebAppContext webAppContext = (WebAppContext) handler;
+				webAppContext.setBaseResource(Resource.newClassPathResource("webroot"));
+			}
+		};
+		jetty.addServerCustomizers(customizer);
+	}
+}
+```
 
 [[spring-boot-jsp-sample-undertow]]
 == What about Undertow?

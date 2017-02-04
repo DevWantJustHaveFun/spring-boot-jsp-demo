@@ -19,6 +19,7 @@
 	</parent>
 
 	<modules>
+		<module>jsp-demo-jetty</module>
 		<module>jsp-demo-tomcat</module>
 		<module>jsp-demo-undertow</module>
 	</modules>
