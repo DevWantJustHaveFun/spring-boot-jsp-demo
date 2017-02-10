@@ -1,0 +1,51 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.1.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+jar {
+	baseName = 'demo'
+	version = '0.0.1-SNAPSHOT'
+}
+
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-web'){
+  		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+ 	}
+	compile('org.springframework.boot:spring-boot-starter-undertow')
+	compile('org.springframework.boot:spring-boot-loader')
+	compile('io.undertow:jastow:2.0.0.Final')
+	compile('javax.servlet:jstl')
+	compile('org.jboss.spec.javax.servlet.jsp:jboss-jsp-api_2.3_spec:1.0.1.Final')
+	compile('org.glassfish:javax.el')
+	compile('org.eclipse.jdt.core.compiler:ecj:4.5.1')
+	compile('org.jboss.metadata:jboss-metadata-common:10.0.0.Final')
+	compile('org.jboss.metadata:jboss-metadata-web:10.0.0.Final')
+	compile('org.jboss.spec.javax.servlet.jstl:jboss-jstl-api_1.2_spec:1.1.2.Final'){
+  		exclude group: 'xalan', module: 'xalan'
+ 	}
+	
+	
+	compile('org.jboss.spec.javax.servlet:jboss-servlet-api_3.1_spec:1.0.0.Final')
+
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	
+}
