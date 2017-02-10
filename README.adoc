@@ -20,6 +20,7 @@ This sample repository is available at: https://github.com/ghillert/spring-boot-
 This repository contains the following 2 examples:
 
 * _jsp-demo-jetty_ - Demonstrates using JSPs and http://projects.spring.io/spring-boot/[Spring Boot] executable Jars using http://www.eclipse.org/jetty/[Jetty]
+* _jsp-demo-jetty-gradle_ - Demonstrates using JSPs and http://projects.spring.io/spring-boot/[Spring Boot] executable Jars using http://www.eclipse.org/jetty/[Jetty] build with gradle
 * _jsp-demo-tomcat_   - Demonstrates using JSPs and http://projects.spring.io/spring-boot/[Spring Boot] executable Jars using http://tomcat.apache.org/[Tomcat]
 * _jsp-demo-undertow_ - Demonstrates using JSPs and http://projects.spring.io/spring-boot/[Spring Boot] executable Jars using http://undertow.io/[Undertow]
 
@@ -174,12 +175,20 @@ response.setHeader("Expires","0");
 [[spring-boot-jsp-sample-project-running]]
 === Run the Sample Application
 
-Now it is time to run the application - execute:
+Now it is time to run the application - execute
 
+With Maven :
 ```shell
 $ mvn clean package
 $ java -jar jsp-demo-tomcat/target/jsp-demo-tomcat-1.0.0-BUILD-SNAPSHOT.jar
 ```
+
+With Gradle
+```shell
+$ gradle clean build
+$ java -jar jsp-demo-jetty-gradle/build/jsp-demo-jetty-1.0.0-BUILD-SNAPSHOT.jar
+```
+
 In your console you should start seeing how the application starts up.
 
 image::images/starting-tomcat-jsp-sample-with-boot.png[Start Sample for Tomcat]
