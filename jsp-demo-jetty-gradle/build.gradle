@@ -15,8 +15,8 @@ apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 
 jar {
-	baseName = 'demo'
-	version = '0.0.1-SNAPSHOT'
+	baseName = 'jsp-demo-jetty-gradle'
+	version = '1.0.0-BUILD-SNAPSHOT'
 }
 
 sourceCompatibility = 1.8

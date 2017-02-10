@@ -186,7 +186,7 @@ $ java -jar jsp-demo-tomcat/target/jsp-demo-tomcat-1.0.0-BUILD-SNAPSHOT.jar
 With Gradle
 ```shell
 $ gradle clean build
-$ java -jar jsp-demo-jetty-gradle/build/jsp-demo-jetty-1.0.0-BUILD-SNAPSHOT.jar
+$ java -jar jsp-demo-jetty-gradle/build/libs/jsp-demo-jetty-gradle-1.0.0-BUILD-SNAPSHOT.jar
 ```
 
 In your console you should start seeing how the application starts up.
