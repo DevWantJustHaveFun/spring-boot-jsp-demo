@@ -7,16 +7,7 @@ v1.1, 2017-02-03
 toc::[]
 
 [[spring-boot-jsp-repo]]
-== Sample Repository
-
-This sample repository is available at: https://github.com/ghillert/spring-boot-jsp-demo
-
-[cols="2*", width="50%"]
-|===
-|Build Status
-|image:https://travis-ci.org/ghillert/spring-boot-jsp-demo.svg?branch=master["Build Status", link="https://travis-ci.org/ghillert/spring-boot-jsp-demo"]
-|===
-
+== Repository
 This repository contains the following 2 examples:
 
 * _jsp-demo-jetty_ - Demonstrates using JSPs and http://projects.spring.io/spring-boot/[Spring Boot] executable Jars using http://www.eclipse.org/jetty/[Jetty]
@@ -27,35 +18,7 @@ This repository contains the following 2 examples:
 [[spring-boot-jsp-introduction]]
 == Introduction
 
-As you may know, I am a co-organizer for the https://www.devnexus.com/[DevNexus conference], the second-largest enterprise Java conference in North-America in Atlanta, GA. Together with https://twitter.com/summerspittman[Summers Pittman], I also maintain the https://github.com/devnexus/devnexus-site[Spring-based web-application] that drives the website, schedule, call-for-paper (CFP) process and nowadays ticket registrations as well.
-
-[[spring-boot-jsp-goal]]
-== Goal
-
-When we started planing for DevNexus 2016, I wanted to modernize the DevNexus application. Specifically, I planned to improve the underlying infrastructure of the app.
-
-The goal was to move away from a stand-alone http://tomcat.apache.org/[Tomcat-based] servlet-container, which we had been using for the past couple of years. We endured several minutes of down-time whenever a new version of the app was deployed. Sometimes, the Tomcat instance or the server itself gave us grief. Furthermore, I longed for the ability to make https://docs.pivotal.io/pivotalcf/devguide/deploy-apps/blue-green.html[blue/green deployments].
-
-Therefore, the goal emerged to move the application over to a _Platform as a Service_ (PaaS) offering, specifically https://run.pivotal.io/[Pivotal Web Services] (PWS). I did not want to worry any longer about infrastructure issues, and blue/green deployments would be a breeze to accomplish using PWS.
-
-In order to make this all happen, it became apparent, that migrating the application to http://projects.spring.io/spring-boot/[Spring Boot] would help in that endeavor. Luckily the application was generally architected in a way that made the migration to Spring Boot fairly straightforward. The migration also would simplify things greatly overall as we could take full advantage of Spring Boot's defaults and also remove some duplicate functionality that was already baked into Spring Boot.
-
-*One main sticking point*, though, was the used view technology. The DevNexus application has been using _JavaServer Pages_ (JSP) for several years, and we accumulated a non-trivial amount of them. Ultimately, the plan is to migrate the user interface (UI) to a Single Page Application (SPA) but for the 2016 conference (February) that intent was unattainable due to time constraints.
-
-Therefore, the whole migration was a bit in perils initially. As of the current version of Spring Boot at the time of this blog post `1.3.3`, the http://docs.spring.io/spring-boot/docs/1.3.3.RELEASE/reference/htmlsingle/[reference guide] states:
-
-[quote, Spring Boot Reference Guide (version 1.3.3)]
-____
-JSPs should be avoided if possible, there are several known limitations when using them with embedded servlet containers.
-____
-
-The reference guide then goes on to provide a list of *JSP limitations* in http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-jsp-limitations[chapter 27.3.5]. Specifically it states that:
-
-____
-An executable jar will not work because of a hard coded file pattern in Tomcat.
-____
-
-What a bummer…
+This repository is a fork of https://github.com/ghillert/spring-boot-jsp-demo itself a fork of https://github.com/joakime/spring-boot-jsp-demo, I have just added the gradle parts for jetty.
 
 [[spring-boot-jsp-solution]]
 == Solution using Tomcat
@@ -82,10 +45,10 @@ Selecting `web` enables _Full-stack web development with Tomcat and Spring MVC_.
 
 [NOTE]
 ====
-Instead of following the individual steps, you can also download the fully configured sample project from GitHub. Just clone the https://github.com/ghillert/spring-boot-jsp-demo[Demo Project] using:
+Instead of following the individual steps, you can also download the fully configured sample project from GitHub. Just clone the https://github.com/DevWantJustHaveFun/spring-boot-jsp-demo[Demo Project] using:
 
 ```shell
-$ git clone https://github.com/ghillert/spring-boot-jsp-demo.git
+$ git clone https://github.com/DevWantJustHaveFun/spring-boot-jsp-demo.git
 $ cd spring-boot-jsp-demo/jsp-demo-tomcat
 ```
 ====
@@ -245,7 +208,7 @@ https://github.com/fourcube/undertow-jsp-sample[Undertow JSP sample] application
 https://fourcube.github.io/[Chris Grieger]. It turns out that Undertow has indeed
 JSP support by using https://github.com/undertow-io/jastow[jastow], which is a
 Jasper fork for Undertow. The key was to adapt the
-https://github.com/ghillert/spring-boot-jsp-demo/tree/master/jsp-demo-undertow[Undertow JSP sample application
+https://github.com/DevWantJustHaveFun/spring-boot-jsp-demo/tree/master/jsp-demo-undertow[Undertow JSP sample application
 for Spring Boot].
 
 Doing so was actually fairly straightforward. The actual Undertow configuration
@@ -272,7 +235,7 @@ final UndertowDeploymentInfoCustomizer customizer = new UndertowDeploymentInfoCu
 ```
 
 The full source is available in the
-`https://github.com/ghillert/spring-boot-jsp-demo/blob/master/jsp-demo-undertow/src/main/java/com/hillert/JspDemoApplication.java[JspDemoApplication]`
+`https://github.com/DevWantJustHaveFun/spring-boot-jsp-demo/blob/master/jsp-demo-undertow/src/main/java/com/hillert/JspDemoApplication.java[JspDemoApplication]`
 class.
 
 The main issue is more or less the retrieval and configuration of the used Taglibraries.
