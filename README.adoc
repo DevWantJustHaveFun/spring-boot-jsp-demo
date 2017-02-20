@@ -7,8 +7,8 @@ v1.1, 2017-02-03
 toc::[]
 
 [[spring-boot-jsp-repo]]
-== Repository
-This repository contains the following 2 examples:
+== Repository Details
+This repository contains the following examples:
 
 * _jsp-demo-jetty_ - Demonstrates using JSPs and http://projects.spring.io/spring-boot/[Spring Boot] executable Jars using http://www.eclipse.org/jetty/[Jetty]
 * _jsp-demo-jetty-gradle_ - Demonstrates using JSPs and http://projects.spring.io/spring-boot/[Spring Boot] executable Jars using http://www.eclipse.org/jetty/[Jetty] build with gradle
@@ -18,12 +18,16 @@ This repository contains the following 2 examples:
 [[spring-boot-jsp-introduction]]
 == Introduction
 
-This repository is a fork of https://github.com/ghillert/spring-boot-jsp-demo itself a fork of https://github.com/joakime/spring-boot-jsp-demo, I have just added the gradle parts for jetty.
+This repository is a fork of https://github.com/ghillert/spring-boot-jsp-demo (deleted ...) itself a fork of https://github.com/joakime/spring-boot-jsp-demo, I have just added the gradle parts for jetty.
 
 [[spring-boot-jsp-solution]]
 == Solution using Tomcat
 
-Just to recap my requirement, I want to serve JSPs out of my classpath so that I can create executable Jar files. Basically, _Eliminate the webapps folder_.
+Just to recap tthe requirement, I want to serve JSPs out of my classpath so that I can create executable Jar files. Basically, _Eliminate the webapps folder_.
+
+But if you look on the spring boot documentation there is some limitation with JSP :
+http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-developing-web-applications.html#boot-features-jsp-limitations
+
 
 [NOTE]
 ====
@@ -307,7 +311,7 @@ image::images/browser-undertow-jsp-sample-with-boot.png[Start Sample for Underto
 [[spring-boot-jsp-sample-conclusion]]
 == Conclusion
 
-In this blog post I have shown how easy it is to use JSP templates with Spring Boot in executable Jars by simply putting your templates into `src/main/resources/META-INF/resources/WEB-INF/jsp/`.
+I have shown how easy it is to use JSP templates with Spring Boot in executable Jars by simply putting your templates into `src/main/resources/META-INF/resources/WEB-INF/jsp/`.
 
 While JSPs are often touted as being *legacy*, I see several reasons why they stay relevant today (2016):
 
@@ -318,4 +322,6 @@ While JSPs are often touted as being *legacy*, I see several reasons why they st
 * Even with alternative frameworks, https://github.com/thymeleaf/thymeleaf/issues/390[you may run into issues]
 
 In any event, I hope this expands your toolbox when using Spring Boot. There is simply no reason why you shouldn't enjoy the benefits of Spring Boot to the fullest extent permissible by law. Remember, https://twitter.com/springcentral/status/598910532008062976[Make JAR, not WAR].
+
+
 
