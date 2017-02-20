@@ -1,6 +1,4 @@
 = Using Spring Boot with JSPs in Executable Jars
-Gunnar Hillert <doc.writer@asciidoctor.org>
-v1.1, 2017-02-03
 :toc: macro
 :toclevels: 5
 
@@ -18,7 +16,7 @@ This repository contains the following examples:
 [[spring-boot-jsp-introduction]]
 == Introduction
 
-This repository is a fork of https://github.com/ghillert/spring-boot-jsp-demo (deleted ...) itself a fork of https://github.com/joakime/spring-boot-jsp-demo, I have just added the gradle parts for jetty.
+This repository is a fork of https://github.com/ghillert/spring-boot-jsp-demo (deleted ...) itself a fork of https://github.com/joakime/spring-boot-jsp-demo, I have just added the gradle part for jetty.
 
 [[spring-boot-jsp-solution]]
 == Solution using Tomcat
